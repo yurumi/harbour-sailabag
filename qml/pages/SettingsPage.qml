@@ -43,9 +43,9 @@ Dialog {
 
         PullDownMenu {
             MenuItem {
-                text: qsTr("Reset Database")
+                text: qsTr("Clear local database")
                 onClicked: {
-                    remorseClearDatabase.execute("Database is going to be cleared",
+                    remorseClearDatabase.execute(qsTr("Database is going to be cleared"),
                                                                                     function() {
                                                                                         ArticlesDatabase.clear(); articlesModel.clear()}
                            )}

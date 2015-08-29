@@ -2,12 +2,33 @@ import QtQuick 2.0
 import QtWebKit 3.0
 import Sailfish.Silica 1.0
 
+import "../components"
+
 Page {
     id: deletearticlepage
+    property string action: ""
     property string serverurl: ""
     property string username: ""
     property string password: ""
     property int delID: -1
+
+    Component.onCompleted: {
+        showCommitScreen()
+    }
+        
+    onStatusChanged: {
+        if(status === PageStatus.Activating){
+            showCommitScreen()
+        }
+    }
+
+    function showCommitScreen() {
+        commitScreen.visible = true
+    }
+
+    function hideCommitScreen() {
+        commitScreen.visible = false
+    }
 
     SilicaWebView {
         id: webview
@@ -37,9 +58,11 @@ Page {
         }
 
         Component.onCompleted: {
-            // console.log("USERNAME: " + postarticlepage.username + "::" + postarticlepage.password)
-            // console.log("URL: " + postarticlepage.url)
-            webview.url = serverurl + "/?action=delete&id=" + delID
+            if(action === "post_article"){
+                webview.url = serverurl + "/?action=add&url=" + Qt.btoa(Clipboard.text)
+            }else{
+                webview.url = serverurl + "/?action=" + action + "&id=" + delID
+            }
         }
 
         onLoadingChanged: {
@@ -48,6 +71,8 @@ Page {
                 webview.experimental.evaluateJavaScript("document.querySelector('input[name=login]').setAttribute('value', '" + deletearticlepage.username + "')");
                 webview.experimental.evaluateJavaScript("document.querySelector('input[name=password]').setAttribute('value', '" + deletearticlepage.password + "')");
                 webview.experimental.evaluateJavaScript("document.getElementById('longlastingsession').checked = true");
+
+                hideCommitScreen()
             }
             else if(loadRequest.status === WebView.LoadFailedStatus){
                 mainwindow.pushNotification("ERROR", qsTr("Failed to sign in"), qsTr("Server error, check settings."))
@@ -57,4 +82,7 @@ Page {
         }
         
     } // WebView
+
+    CommitScreen {id: commitScreen}
+    
 } // Page

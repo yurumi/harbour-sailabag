@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>Article Overview</source>
-        <translation>Ungelesene Artikel</translation>
+        <translation type="vanished">Ungelesene Artikel</translation>
     </message>
     <message>
         <source>Visit settings page then synchronize.</source>
@@ -32,27 +32,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Send clipboard to server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Clipboard is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mark URL to copy to the clipboard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Deleting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark as read</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark for deletion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -64,7 +48,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete</source>
+        <source>Bag clipboard!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unread Articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for archiving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for deletion</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CommitScreen</name>
+    <message>
+        <source>Committing...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -73,18 +76,6 @@
     <message>
         <source>My Cover</source>
         <translation type="vanished">Mein Cover</translation>
-    </message>
-    <message>
-        <source>%1 unread articles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clipboard is empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark URL to copy to the clipboard.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -161,6 +152,13 @@
     </message>
 </context>
 <context>
+    <name>LoadScreen</name>
+    <message>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PostArticlePage</name>
     <message>
         <source>Failed to sign in</source>
@@ -197,7 +195,7 @@
     <name>SettingsPage</name>
     <message>
         <source>Reset Database</source>
-        <translation>Datenbank zurücksetzen (lokal)</translation>
+        <translation type="vanished">Datenbank zurücksetzen (lokal)</translation>
     </message>
     <message>
         <source>Save Settings</source>
@@ -223,6 +221,14 @@
         <source>Login Name</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Clear local database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Database is going to be cleared</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SignInPage</name>
@@ -243,7 +249,7 @@
     </message>
     <message>
         <source>Synchronize</source>
-        <translation type="unfinished">Synchronisieren</translation>
+        <translation type="obsolete">Synchronisieren</translation>
     </message>
     <message>
         <source>Sync Overview</source>
@@ -251,6 +257,22 @@
     </message>
     <message>
         <source>Mark as unread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staged for Deletion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staged for archiving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login information incomplete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check settings page.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

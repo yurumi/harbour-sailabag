@@ -37,8 +37,6 @@ Page {
         }
 
         Component.onCompleted: {
-            // console.log("USERNAME: " + postarticlepage.username + "::" + postarticlepage.password)
-            // console.log("URL: " + postarticlepage.url)
             webview.url = serverurl + "/?action=add&url=" + Qt.btoa(Clipboard.text)
         }
 

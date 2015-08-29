@@ -1,7 +1,6 @@
 #ifndef SSLIGNORENETWORKACCESSMANAGER_H 
 #define SSLIGNORENETWORKACCESSMANAGER_H 
 
-// #include <QObject>
 #include <QNetworkAccessManager>
 
 class SslIgnoreNetworkAccessManager : public QNetworkAccessManager

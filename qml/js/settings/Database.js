@@ -39,7 +39,7 @@ function instance()
 
 function openDatabase(version)
 {
-    return Storage.LocalStorage.openDatabaseSync("SailorbagDB", version, "Sailorbag Database for settings and articles", 5000000);  /* DB Size: 5MB */
+    return Storage.LocalStorage.openDatabaseSync("SailabagDB", version, "Sailabag Database for settings", 5000000);  /* DB Size: 5MB */
 }
 
 function set(setting, value)

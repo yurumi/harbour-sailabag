@@ -35,41 +35,46 @@ CoverBackground {
 
     property int numUnreadArticles: 0
 
-    Label {
-        id: label
-        anchors.centerIn: parent
-        text: qsTr("%1 unread articles").arg(numUnreadArticles)
-        wrapMode: Text.Wrap
+    CoverPlaceholder {
+        text: "Sailabag"
+        icon.source: "qrc:/qml/img/coverbackground.png"
     }
+    
+    // Label {
+    //     id: label
+    //     anchors.centerIn: parent
+    //     text: qsTr("%1 unread articles").arg(numUnreadArticles)
+    //     wrapMode: Text.Wrap
+    // }
 
-    CoverActionList {
-        id: coverAction
+//     CoverActionList {
+//         id: coverAction
 
-        CoverAction {
-            iconSource: "image://theme/icon-cover-refresh"
-            onTriggered: {
-                var serverURL = mainwindow.settings.serverURL
-                var userID = mainwindow.settings.userID
-                var userToken = mainwindow.settings.userToken
-                mainwindow.downloadmanager.downloadFeed(serverURL, userID, userToken)
-//                pageStack.replace("../pages/TaskPage.qml", {}, PageStackAction.Immediate)
-            }
-        }
+//         CoverAction {
+//             iconSource: "image://theme/icon-cover-refresh"
+//             onTriggered: {
+//                 var serverURL = mainwindow.settings.serverURL
+//                 var userID = mainwindow.settings.userID
+//                 var userToken = mainwindow.settings.userToken
+//                 mainwindow.downloadmanager.downloadFeed(serverURL, userID, userToken)
+// //                pageStack.replace("../pages/TaskPage.qml", {}, PageStackAction.Immediate)
+//             }
+//         }
 
-        CoverAction {
-            iconSource: "image://theme/icon-cover-new"
-            onTriggered: {
-                // mainwindow.sendClipboard()
-                if (Clipboard.hasText) {
-                    // pageStack.replace("../pages/SaveArticlePage.qml", {}, PageStackAction.Immediate)
-                    // pageStack.push(Qt.resolvedUrl("../pages/SaveArticlePage.qml"), {"articleURL": Clipboard.text})
-                    mainwindow.activate()
-                }else{
-                    mainwindow.pushNotification("INFO", qsTr("Clipboard is empty"), qsTr("Mark URL to copy to the clipboard."))
-                }           
-            }
-        }
-    }
+//         CoverAction {
+//             iconSource: "image://theme/icon-cover-new"
+//             onTriggered: {
+//                 // mainwindow.sendClipboard()
+//                 if (Clipboard.hasText) {
+//                     // pageStack.replace("../pages/SaveArticlePage.qml", {}, PageStackAction.Immediate)
+//                     // pageStack.push(Qt.resolvedUrl("../pages/SaveArticlePage.qml"), {"articleURL": Clipboard.text})
+//                     mainwindow.activate()
+//                 }else{
+//                     mainwindow.pushNotification("INFO", qsTr("Clipboard is empty"), qsTr("Mark URL to copy to the clipboard."))
+//                 }           
+//             }
+//         }
+//     }
 }
 
 

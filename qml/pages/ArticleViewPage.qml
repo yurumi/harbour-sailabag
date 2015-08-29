@@ -2,19 +2,55 @@ import QtQuick 2.0
 import QtWebKit 3.0
 import Sailfish.Silica 1.0
 
+import "../components"
+
 Page {
     id: articleview
 
     property string articleUrl: ""
     property string articleTitle: ""
     property string articleContent: ""
-    property string articlePubDate: ""
+
+    onStatusChanged: {
+        if(status === PageStatus.Activating){
+            loadScreen.state = "show"
+            webview.visible = false
+        }
+    }
+    
+    Component.onCompleted: {
+        loadScreen.state = "show"
+        webview.visible = false
+    }
 
     SilicaWebView {
         id: webview
         anchors.fill: parent
         Component.onCompleted: {
             webview.loadHtml(createHtmlHeader() + articleContent + createHtmlFooter()) }
+
+        // TODO: archive / delete from within article view
+        // PushUpMenu {
+        //     MenuItem {
+        //         text: qsTr("Scroll to top")
+        //         // onClicked: { articleListView.scrollToTop() }
+        //     }
+        // }
+
+        onLoadingChanged: {
+            console.log("Load status: " + loadRequest.status)
+            if(loadRequest.status === WebView.LoadStartedStatus){
+                loadScreen.state = "show"
+                webview.visible = false
+            }else{
+                loadScreen.state = "hide"
+                webview.visible = true
+            }
+        }
+
+        // onLoadProgressChanged: {
+        //     loadScreen.progress = loadProgress
+        // }
     }
 
     function createHtmlHeader(){
@@ -47,4 +83,7 @@ Page {
                         "</html>"
         return htmlFooter
     }
+
+    LoadScreen {id: loadScreen}
+
 }

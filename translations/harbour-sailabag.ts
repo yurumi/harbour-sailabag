@@ -20,31 +20,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Send clipboard to server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Clipboard is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mark URL to copy to the clipboard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Article Overview</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Deleting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark as read</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark for deletion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -56,22 +36,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete</source>
+        <source>Bag clipboard!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unread Articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for archiving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for deletion</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CoverPage</name>
+    <name>CommitScreen</name>
     <message>
-        <source>%1 unread articles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clipboard is empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark URL to copy to the clipboard.</source>
+        <source>Committing...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -134,6 +118,13 @@
     </message>
 </context>
 <context>
+    <name>LoadScreen</name>
+    <message>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PostArticlePage</name>
     <message>
         <source>Failed to sign in</source>
@@ -146,10 +137,6 @@
 </context>
 <context>
     <name>SettingsPage</name>
-    <message>
-        <source>Reset Database</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Save Settings</source>
         <translation type="unfinished"></translation>
@@ -174,6 +161,14 @@
         <source>Login Name</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Clear local database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Database is going to be cleared</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SignInPage</name>
@@ -193,15 +188,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Synchronize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sync Overview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mark as unread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staged for Deletion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staged for archiving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login information incomplete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check settings page.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

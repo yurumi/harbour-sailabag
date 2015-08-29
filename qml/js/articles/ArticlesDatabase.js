@@ -15,7 +15,7 @@ function sanitizeString(s)
 
 function instance()
 {
-    return Storage.LocalStorage.openDatabaseSync("SailorbagDB", "1.0", "Articles", 5000000);  /* DB Size: 5MB */
+    return Storage.LocalStorage.openDatabaseSync("SailabagDB", "1.0", "Articles", 5000000);  /* DB Size: 5MB */
 }
 
 function load()
@@ -23,16 +23,16 @@ function load()
     var db = instance();
 
     db.transaction(function(tx) {
-        tx.executeSql("CREATE TABLE IF NOT EXISTS Articles (url TEXT PRIMARY KEY, 
-                                                            id INTEGER, 
-                                                            title TEXT, 
-                                                            content TEXT, 
-                                                            pubDate DATETIME, 
-                                                            favoriteFlag INTEGER, 
-                                                            archiveFlag INTEGER, 
-                                                            deletionFlag INTEGER, 
-                                                            syncState INTEGER, 
-                                                            UNIQUE (url, id))");
+        tx.executeSql("CREATE TABLE IF NOT EXISTS Articles (url TEXT PRIMARY KEY" +
+		      ", id INTEGER" +
+		      ", title TEXT" +
+		      ", content TEXT" +
+		      ", pubDate DATETIME" +
+		      ", favoriteFlag INTEGER" +
+		      ", archiveFlag INTEGER" +
+		      ", deletionFlag INTEGER" +
+		      ", syncState INTEGER" +
+		      ", UNIQUE (url, id))");
     });
 }
 
@@ -51,7 +51,6 @@ function invalidateEntries()
         var res = tx.executeSql("SELECT * FROM Articles")
 
 	for(var i = 0; i < res.rows.length; i++){
-	    console.log("Invalidate article " + res.rows[i].id)
 	    tx.executeSql("UPDATE Articles SET syncState=-1 WHERE url='" + res.rows[i].url + "'")
 	}
     });
@@ -63,9 +62,15 @@ function removeInvalidEntries()
         var res = tx.executeSql("SELECT * FROM Articles WHERE syncState=-1")
 
 	for(var i = 0; i < res.rows.length; i++){
-	    console.log("Remove invalid article " + res.rows[i].id)
 	    tx.executeSql("DELETE FROM Articles WHERE url=?", [res.rows[i].url]);
 	}
+    });
+}
+
+function removeID(delID)
+{    
+    instance().transaction(function(tx) {
+	tx.executeSql("DELETE FROM Articles WHERE id=?", [delID]);
     });
 }
 
@@ -76,12 +81,10 @@ function store(url, id, title, content, pubDate)
 
 	if(res.rows.length) {
 	    instance().transaction(function(tx) {
-		console.log("Article exists, setting syncState (" + res.rows[0].id + ")")
 		tx.executeSql("UPDATE Articles SET syncState=0 WHERE url='" + url + "'")
 	    })
 	}
 	else{
-	    console.log("New article (" + id + ")")
 	    var title_san = sanitizeString(title)
 	    instance().transaction(function(tx) {
 		// tx.executeSql("INSERT OR REPLACE INTO Articles (url, id, title, content, pubDate, favoriteFlag, archiveFlag, deletionFlag) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [url, id, title_san, content, pubDate, 0, 0, 0]);
@@ -91,19 +94,12 @@ function store(url, id, title, content, pubDate)
     });
 }
 
-// function remove(url)
-// {
-//     instance().transaction(function(tx) {
-//         tx.executeSql("DELETE FROM History WHERE url=?", [url]);
-//     });
-// }
-
 function queryUnreadArticles(model)
 {  
     model.clear();
     
     instance().transaction(function(tx) {
-        var res = tx.executeSql("SELECT * FROM Articles WHERE deletionFlag=0 ORDER BY id DESC")
+        var res = tx.executeSql("SELECT * FROM Articles WHERE deletionFlag=0 AND archiveFlag=0 ORDER BY id DESC")
 
         if(res.rows.length)
             model.populate(res.rows);
@@ -112,37 +108,72 @@ function queryUnreadArticles(model)
     });
 }
 
-function queryArticlesToDelete(model)
-{  
+function queryStagedArticles(model)
+{
     model.clear();
-    
-    instance().transaction(function(tx) {
-        var res = tx.executeSql("SELECT * FROM Articles WHERE deletionFlag=1")
 
-        if(res.rows.length)
-            model.populate(res.rows);
-        else
-            model.clear();
+    instance().transaction(function(tx) {
+        var dels = tx.executeSql("SELECT * FROM Articles WHERE deletionFlag=1")
+        var archs = tx.executeSql("SELECT * FROM Articles WHERE archiveFlag=1")
+
+        if(dels.rows.length)
+            model.appendRows(dels.rows);
+	if(archs.rows.length)
+            model.appendRows(archs.rows);
     });
+    
+    // queryArticlesToDelete(model)
+    // queryArticlesToMarkAsRead(model)
 }
 
-function markForDeletion(model, delUrl)
+// function queryArticlesToMarkAsRead(model)
+// {  
+//     instance().transaction(function(tx) {
+//         var res = tx.executeSql("SELECT * FROM Articles WHERE archiveFlag=1")
+
+//         if(res.rows.length)
+//             model.populate(res.rows);
+//     });
+// }
+
+// function queryArticlesToDelete(model)
+// {  
+//     instance().transaction(function(tx) {
+//         var res = tx.executeSql("SELECT * FROM Articles WHERE deletionFlag=1")
+
+//         if(res.rows.length)
+//             model.populate(res.rows);
+//         // else
+//         //     model.clear();
+//     });
+// }
+
+function markAsRead(model, readUrl)
 {
     instance().transaction(function(tx) {
-        // var res = tx.executeSql("DELETE FROM Articles WHERE url='" + delUrl + "'")
+        tx.executeSql("UPDATE Articles SET archiveFlag=1 WHERE url='" + readUrl + "'")
+    });
+
+    queryUnreadArticles(model)
+}
+
+function stageForDeletion(model, delUrl)
+{
+    instance().transaction(function(tx) {
         tx.executeSql("UPDATE Articles SET deletionFlag=1 WHERE url='" + delUrl + "'")
     });
 
     queryUnreadArticles(model)
 }
 
-function markAsUnread(model, delUrl)
+function markAsUnread(syncModel, unreadArticlesModel, id)
 {
     instance().transaction(function(tx) {
-        // var res = tx.executeSql("DELETE FROM Articles WHERE url='" + delUrl + "'")
-        tx.executeSql("UPDATE Articles SET deletionFlag=0 WHERE url='" + delUrl + "'")
-        tx.executeSql("UPDATE Articles SET archiveFlag=0 WHERE url='" + delUrl + "'")
+        tx.executeSql("UPDATE Articles SET deletionFlag=0 WHERE id=?", [id])
+        tx.executeSql("UPDATE Articles SET archiveFlag=0 WHERE id=?", [id] )
     });
 
-    queryArticlesToDelete(model)
+    // queryArticlesToDelete(syncModel)
+    queryStagedArticles(syncModel)
+    queryUnreadArticles(unreadArticlesModel)
 }

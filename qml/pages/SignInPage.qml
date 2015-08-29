@@ -29,43 +29,20 @@ Page {
         // experimental.onMessageReceived: {
         //     // for console.log output
         //     listener.execute(message)
-        //     // console.log("Message nötig" + message)
-        // }
-        
-        // function check(){
-        //     console.log("Hier check")
-        //     experimental.postMessage("set_username");
         // }
                 
         Component.onCompleted: {
-            // console.log("USERNAME: " + signinpage.username + "::" + signinpage.password)
-            // console.log("URL: " + signinpage.url)
-            
-            // var data = new Object;
-            // data.type = "console_log";
-            // data.log = "Bitte bitte bitte bitte";
-
-            // console.log("Vorher")
-            // experimental.postMessage(JSON.stringify(data));
-            // experimental.postMessage("set_username");
-            // check();
-            // experimental.postMessage("set_userpassword");
-            // experimental.postMessage("OMGWTF");
-            // console.log("Nachher")
         }
 
         onLoadingChanged: {
-            console.log("LoadingChanged: " + loadRequest.status)
             if(loadRequest.status === WebView.LoadSucceededStatus)
             {
-                console.log("Loading SUCCEEDED")             
                 webview.experimental.evaluateJavaScript("document.querySelector('input[name=login]').setAttribute('value', '" + signinpage.username + "')");
                 webview.experimental.evaluateJavaScript("document.querySelector('input[name=password]').setAttribute('value', '" + signinpage.password + "')");
                 //webview.experimental.evaluateJavaScript("document.getElementById('longlastingsession').checked = true");
                 // webview.experimental.evaluateJavaScript("document.querySelector('button[type=submit]').click()");
             }
             else if(loadRequest.status === WebView.LoadFailedStatus){
-                console.log("Loading FAILED")
                 mainwindow.pushNotification("ERROR", qsTr("Failed to sign in"), qsTr("Server error, check settings."))
                 pageStack.pop()
             }

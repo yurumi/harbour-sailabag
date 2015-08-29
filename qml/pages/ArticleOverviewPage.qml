@@ -2,6 +2,7 @@ import QtQuick 2.1
 import Sailfish.Silica 1.0
 
 import "../models"
+import "../components"
 import "../js/articles/ArticlesDatabase.js" as ArticlesDatabase
 
 Page {
@@ -9,7 +10,7 @@ Page {
 
     property ArticlesModel articlesModel: ArticlesModel { }
 
-    property int signInState: -1
+    // property int signInState: -1
 
     function updateModel()
     {
@@ -25,31 +26,26 @@ Page {
         busyIndicator.visible = false
     }
 
-    function signIn()
-    {
-        console.log("Signing in...")
-        mainwindow.downloadmanager.updateSignInState(mainwindow.settings.serverURL)
-        // pageStack.push(Qt.resolvedUrl("SignInPage.qml"), {"url": mainwindow.settings.serverURL,
-        //                                                   "username": mainwindow.settings.userName,
-        //                                                   "password": mainwindow.settings.userPassword}
-        // )
-    }
+    // function signIn()
+    // {
+    //     console.log("Signing in...")
+    //     mainwindow.downloadmanager.updateSignInState(mainwindow.settings.serverURL)
+    //     // pageStack.push(Qt.resolvedUrl("SignInPage.qml"), {"url": mainwindow.settings.serverURL,
+    //     //                                                   "username": mainwindow.settings.userName,
+    //     //                                                   "password": mainwindow.settings.userPassword}
+    //     // )
+    // }
 
-    function storeSignInState(signedIn)
-    {
-        console.log("SIGNINSTATE: " + signedIn)
-    }
+    // function storeSignInState(signedIn)
+    // {
+    //     console.log("SIGNINSTATE: " + signedIn)
+    // }
     
     Component.onCompleted: {
         mainwindow.downloadmanager.syncFinished.connect(updateModel);
         mainwindow.downloadmanager.downloadError.connect(downloadError);
-        mainwindow.downloadmanager.signInStateUpdate.connect(storeSignInState);
-    }
-
-    onStatusChanged: {
-        if(status === PageStatus.Activating){
-            updateModel()
-        }        
+        // mainwindow.downloadmanager.signInStateUpdate.connect(storeSignInState);
+        updateModel()
     }
 
     SilicaListView {
@@ -76,7 +72,7 @@ Page {
             }
             MenuItem {
                 text: qsTr("Go to sync page")
-                onClicked: pageStack.push(Qt.resolvedUrl("SyncPage.qml"))
+                onClicked: pageStack.push(Qt.resolvedUrl("SyncPage.qml"), { "unreadArticlesModel": articlesModel})
             }
             MenuItem {
                 text: qsTr("Download articles")
@@ -93,7 +89,7 @@ Page {
                 }
             }
             MenuItem {
-                text: qsTr("Send clipboard to server")
+                text: qsTr("Bag clipboard!")
                 onClicked: {
                     if (Clipboard.hasText) {
                         var serverurl = mainwindow.settings.serverURL
@@ -104,167 +100,62 @@ Page {
                             mainwindow.pushNotification("INFO", qsTr("Login information incomplete"), qsTr("Check settings page."))    
                         }else{
                             // articleoverview.signIn()
-                            console.log("POST: " + username + "::" + password)
-                            pageStack.push(Qt.resolvedUrl("PostArticlePage.qml"), {"serverurl": serverurl,
-                                                                                   "username": username,
-                                                                                   "password": password})
+                            pageStack.push(Qt.resolvedUrl("DeleteArticlePage.qml"), {
+                                                          "action": "post_article",
+                                                          "serverurl": serverurl,
+                                                          "username": username,
+                                                          "password": password,
+                                                          "delID": -1})
+                            
+                            // pageStack.push(Qt.resolvedUrl("PostArticlePage.qml"), {"serverurl": serverurl,
+                            //                                                        "username": username,
+                            //                                                        "password": password})
                         }
                     }else{
                         mainwindow.pushNotification("INFO", qsTr("Clipboard is empty"), qsTr("Mark URL to copy to the clipboard."))
                     }           
-
-                    // mainwindow.sendClipboard()
                 }
             }
         }
 
-        // PushUpMenu {
-        //     MenuItem {
-        //         text: qsTr("Scroll to top")
-        //         onClicked: { articleListView.scrollToTop() }
-        //     }
-        // }
-
         header: PageHeader {
-            title: qsTr("Article Overview")
+            title: qsTr("Unread Articles")
         }
 
-        delegate: Item {
-            id: articleDelegate
-            width: ListView.view.width
-            height: menuOpen ? contextMenu.height + contentItem.height : contentItem.height
-
-            property Item contextMenu
-            property bool menuOpen: contextMenu != null && contextMenu.parent === articleDelegate
-
-            function remove() {
-                articleDeleteRemorse.execute(articleDelegate, qsTr("Deleting"), function() {
-                    ArticlesDatabase.markForDeletion(articlesModel, url)
+        delegate: ArticleDelegate{
+            function markAsRead() {
+                remorseAction(qsTr("Stage for archiving"), function() {
+                    ArticlesDatabase.markAsRead(articlesModel, url)
+                }, 2000)
+            }
+    
+            function stageForDeletion() {
+                remorseAction(qsTr("Stage for deletion"), function() {
+                    ArticlesDatabase.stageForDeletion(articlesModel, url)
                 }, 2000)
             }
 
-            RemorseItem {
-                id: articleDeleteRemorse
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("ArticleViewPage.qml"), {"articleUrl": url, "articleTitle": title, "articleContent": content})
             }
             
-            BackgroundItem {
-                id: contentItem
-                height: delegateColumn.height
-                width: parent.width
-
-                Column
-                {
-                    id: delegateColumn
-                    width: parent.width
-                    spacing: 5
-
-                    Label {
-                        id: titleLBL
-                        text: title
-                        color: articleDelegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                        wrapMode: Text.Wrap
-                        anchors {
-                            left: parent.left
-                            right: parent.right
-                            margins: Theme.paddingLarge
-                        }
-                    }
-                    Label {
-                        id: urlLBL
-                        text: url
-                        color: articleDelegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
-                        font.pixelSize: Theme.fontSizeExtraSmall
-                        truncationMode: TruncationMode.Fade
-                        anchors {
-                            left: parent.left
-                            right: parent.right
-                            margins: Theme.paddingLarge
-                        }
-                    }
-                    // Label {
-                        //     id: pubdateLBL
-                        //     text: pubDate
-                        //     color: articleDelegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
-                        //     font.pixelSize: Theme.fontSizeExtraSmall
-                        //     truncationMode: TruncationMode.Fade
-                        //     anchors {   left: parent.left
-                        //                 right: parent.right
-                        //                 margins: Theme.paddingLarge
-                        //             }
-                        // }
-                    // Label {
-                    //     id: idLBL
-                    //     text: id
-                    //     color: articleDelegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
-                    //     font.pixelSize: Theme.fontSizeExtraSmall
-                    //     truncationMode: TruncationMode.Fade
-                    //     anchors {
-                    //         left: parent.left
-                    //         right: parent.right
-                    //         margins: Theme.paddingLarge
-                    //     }
-                    // }
-                    Separator {
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        color: Theme.primaryColor
-                    }
-                }
-
-                onPressAndHold: {
-                    if (!contextMenu) {
-                        contextMenu = contextMenuComponent.createObject(articleListView)
-                    }
-                    contextMenu.show(articleDelegate)
-                }
-                
-                onClicked: {
-                    pageStack.push(Qt.resolvedUrl("ArticleViewPage.qml"), {"articleUrl": url, "articleTitle": title, "articleContent": content, "articlePubDate": pubDate})
-                }
-            } // BackgroundItem
-            
             Component {
-                id: contextMenuComponent
+                id: contextMenu
                 
                 ContextMenu {
                     MenuItem {
-                        text: qsTr("Mark as read")
-                        onClicked: console.log("Clicked Option 1")
+                        text: qsTr("Stage for archiving")
+                        onClicked: markAsRead()
                     }
                     MenuItem {
-                        text: qsTr("Mark for deletion")
-                        onClicked: {
-                            contextMenu.hide()
-
-                            remove()
-                            // ArticlesDatabase.markForDeletion(articlesModel, url)
-                        }
-                    }
-                    MenuItem {
-                        text: qsTr("Delete")
-                        onClicked: {
-                            contextMenu.hide()
-
-                            var serverurl = mainwindow.settings.serverURL
-                            var username = mainwindow.settings.userName
-                            var password = mainwindow.settings.userPassword
-
-                            if ( (serverurl === "") || (username === "") || (password === "") ){
-                                mainwindow.pushNotification("INFO", qsTr("Login information incomplete"), qsTr("Check settings page."))    
-                            }else{
-                                pageStack.push(Qt.resolvedUrl("DeleteArticlePage.qml"), {"serverurl": serverurl,
-                                                                                         "username": username,
-                                                                                         "password": password,
-                                                                                         "delID": id})
-                            }
-                        }
-                    }
-                    
+                        text: qsTr("Stage for deletion")
+                        onClicked: stageForDeletion()
+                    }       
                 }
-            } // ContextMenu
+            } // contextMenu
 
-        } // delegate
-
+        }
+        
         VerticalScrollDecorator {}
 
     } // ListView
@@ -273,5 +164,6 @@ Page {
         id: busyIndicator
         anchors.centerIn: parent
         running: false
+        size: BusyIndicatorSize.Large 
     }
 }

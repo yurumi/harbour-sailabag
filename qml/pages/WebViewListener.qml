@@ -1,7 +1,5 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
-// import "../../../js/settings/Database.js" as Database
-// import "../../../js/settings/Credentials.js" as Credentials
 
 Item
 {
