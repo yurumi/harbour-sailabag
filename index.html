@@ -32,9 +32,9 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h3>
-<a id="sailabag-introduction" class="anchor" href="#sailabag-introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sailabag introduction</h3>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h3>
 
-<p>tbd</p>
+<p>Sailabag is a native client for the read-it-later server <a href="https://www.wallabag.org/">wallabag</a>. Unlike e.g. <em>Pocket</em>, <em>wallabag</em> is selfhostable, free and open source. You can save web pages and sync your phone or tablet. The content will be available for offline reading.</p>
 
 <h3>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
@@ -44,7 +44,49 @@
 <h3>
 <a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use</h3>
 
-<p>tbd</p>
+<h2>
+<a id="wallabag-server" class="anchor" href="#wallabag-server" aria-hidden="true"><span class="octicon octicon-link"></span></a><em>wallabag</em> server</h2>
+
+<p>There are two possibilities to use <em>wallabag</em>:</p>
+
+<ul>
+<li>The easiest way of using <em>wallabag</em> is to create a free account at <a href="https://www.framabag.org/">Framabag</a>.</li>
+<li>Alternatively, you can set up your own server for example on your NAS or Raspberry Pi (see link collection below).</li>
+</ul>
+
+<h2>
+<a id="browser-extension" class="anchor" href="#browser-extension" aria-hidden="true"><span class="octicon octicon-link"></span></a>Browser extension</h2>
+
+<p>Next, you need to install a extension for your browser, for example the <a href="https://addons.mozilla.org/en-US/firefox/addon/wallabag/?src=api">Firefox Add-on</a>. After setting the URL of your server, there will be a button to post the currently visited page. It is also possible to login to your server and modify the saved articles or to configure the server.</p>
+
+<h2>
+<a id="client" class="anchor" href="#client" aria-hidden="true"><span class="octicon octicon-link"></span></a>Client</h2>
+
+<p>Besides this client for Sailfish OS, there are clients for Android, iOS, Firefox OS, and Windows Phone. In the following, the usage of <em>Sailabag</em> is described.</p>
+
+<p>In order to use <em>Sailabag</em> you first need to go to the settings page by choosing "Settings" from the pull down menu at the start screen. There you have to set at least the URL of the <em>wallabag</em> server, the user ID and the user token. For the user ID and token, you have to login to your server with your browser and select "Config". These settings are sufficient to download the saved articles on your server. If you also want to mark articles as read or delete articles from your server you also have to set your username and password.</p>
+
+<p>If all is set up, go back to the article overview page by swiping to the left (accepting the changes in the settings). Here you can select "Download articles" from the pull down menu. If no error occurs all your saved unread articles should appear. You can read an article by tapping on the corresponding entry. When finished reading, you can go back to the overview by swiping to the right.</p>
+
+<p>With <em>Sailabag</em> it is also possible to mark articles as read or to delete articles. Long press on an item in the articles list and choose either "Stage for archiving" or "Stage for deletion". If you're not struck by remorse, the entry will be moved to the sync page which can be accessed by selecting "Go to sync page" from the pull down menu.</p>
+
+<p>On the sync page, articles staged for archiving or deletion can be submitted to the server by tapping on the corresponding item. A longpress gives you the opportunity to move the article back to the unread articles page.</p>
+
+<h3>
+<a id="links" class="anchor" href="#links" aria-hidden="true"><span class="octicon octicon-link"></span></a>Links</h3>
+
+<h2>
+<a id="setup-a-wallabag-server" class="anchor" href="#setup-a-wallabag-server" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setup a wallabag server</h2>
+
+<ul>
+<li><a href="http://doc.wallabag.org/en/Administrator/download_and_install.html">http://doc.wallabag.org/en/Administrator/download_and_install.html</a></li>
+<li><a href="http://opensource.com/life/14/4/open-source-read-it-later-app-wallabag">http://opensource.com/life/14/4/open-source-read-it-later-app-wallabag</a></li>
+<li><a href="http://support.wallabag.org/kb/faq/">http://support.wallabag.org/kb/faq/</a></li>
+<li>
+<a href="http://linuxundich.de/gnu-linux/die-freie-pocket-alternative-wallabag-zum-selber-hosten/">http://linuxundich.de/gnu-linux/die-freie-pocket-alternative-wallabag-zum-selber-hosten/</a> (german)</li>
+<li><a href="https://www.rosehosting.com/blog/install-wallabag-on-ubuntu-12-04-lts-vps/">https://www.rosehosting.com/blog/install-wallabag-on-ubuntu-12-04-lts-vps/</a></li>
+<li><a href="http://freedif.org/want-to-read-it-later-save-it-with-wallabag/">http://freedif.org/want-to-read-it-later-save-it-with-wallabag/</a></li>
+</ul>
 
 <h3>
 <a id="todos" class="anchor" href="#todos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Todos</h3>
