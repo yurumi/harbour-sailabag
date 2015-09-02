@@ -32,9 +32,11 @@ Rectangle {
 
     Label {
         id: loadScreenText
-        text: qsTr("Committing...")
+        text: qsTr("Committing")
+        font.family: Theme.fontFamilyHeading
+        font.pixelSize: Theme.fontSizeLarge
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: 150
+        anchors.verticalCenterOffset: -120
     }
     
     BusyIndicator {

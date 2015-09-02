@@ -67,7 +67,7 @@
 <context>
     <name>CommitScreen</name>
     <message>
-        <source>Committing...</source>
+        <source>Committing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -154,7 +154,7 @@
 <context>
     <name>LoadScreen</name>
     <message>
-        <source>Loading...</source>
+        <source>Loading</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

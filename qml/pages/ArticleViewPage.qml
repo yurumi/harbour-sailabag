@@ -45,6 +45,44 @@ Page {
     SilicaWebView {
         id: webview
         anchors.fill: parent
+
+        header: PageHeader {
+            title: articleTitle
+            // wrapMode: Text.Elide
+        }
+
+        // header: Rectangle {
+        //     width: parent.width
+        //     height: titleLabel.height + 20
+        //     color: Theme.secondaryColor
+            
+        //     // anchors {
+        //     //     top: parent.top
+        //     //     left: parent.left
+        //     //     right: parent.right
+        //     // }
+            
+        //     Label {
+        //         id: titleLabel
+        //         // width: parent.width
+        //         text: articleTitle
+        //         horizontalAlignment: Text.AlignRight
+        //         font.family: Theme.fontFamilyHeading
+        //         font.pixelSize: Theme.fontSizeLarge
+        //         wrapMode: Text.Wrap
+        //         anchors {
+        //             // centerIn: parent
+        //             left: parent.left
+        //             right: parent.right
+        //             margins: Theme.paddingLarge
+        //         }
+
+        //         color: Theme.primaryColor
+        //     }
+        // }
+
+        VerticalScrollDecorator { flickable: webview }
+
         Component.onCompleted: {
             webview.loadHtml(createHtmlHeader() + articleContent + createHtmlFooter()) }
 
@@ -57,7 +95,6 @@ Page {
         // }
 
         onLoadingChanged: {
-            console.log("Load status: " + loadRequest.status)
             if(loadRequest.status === WebView.LoadStartedStatus){
                 loadScreen.state = "show"
                 webview.visible = false
@@ -78,16 +115,27 @@ Page {
                 "\t<head>\n" +
                 "\t\t<meta name=\"viewport\" content=\"initial-scale=1.5, maximum-scale=1.5, user-scalable=no\" />\n" +
                 "\t\t<meta charset=\"utf-8\">\n" +
-                "\t\t<link rel=\"stylesheet\" href=\"main.css\" media=\"all\" id=\"main-theme\">\n" +
-                "\t\t<link rel=\"stylesheet\" href=\"ratatouille.css\" media=\"all\" id=\"extra-theme\">\n" +
+                "\t\t<style type=\"text/css\">\n" +
+                "\t\t\tbody {background-color: #EEE; }\n" +
+                "\t\t\tp.orglink{\n" + 
+                "\t\t\t\tcolor: #666;\n" +
+                "\t\t\t\tfont-size: 0.8em;\n" +
+                "\t\t\t}\n" +
+                "\t\t\ta {\n" +
+                "\t\t\t\tcolor: #000;\n" +
+                "\t\t\t\tfont-weight: bold;\n" +
+                "\t\t\t}\n" +                  
+                "\t\t</style>\n" +
+                // "\t\t<link rel=\"stylesheet\" href=\"main.css\" media=\"all\" id=\"main-theme\">\n" +
+                // "\t\t<link rel=\"stylesheet\" href=\"ratatouille.css\" media=\"all\" id=\"extra-theme\">\n" +
                 "\t</head>\n" +
                 "\t\t<div id=\"main\">\n" +
                 "\t\t\t<body>\n" +
                 "\t\t\t\t<div id=\"content\" class=\"w600p center\">\n" +
                 "\t\t\t\t\t<div id=\"article\">\n" +
                 "\t\t\t\t\t\t<header class=\"mbm\">\n" +
-                "\t\t\t\t\t\t\t<h1>" + articleTitle + "</h1>\n" +
-                "\t\t\t\t\t\t\t<p>Open Original: <a href=\"" + originalUrlText + "\">" + articleUrl + "</a></p>\n" +
+                // "\t\t\t\t\t\t\t<h1>" + articleTitle + "</h1>\n" +
+                "\t\t\t\t\t\t\t<p class=\"orglink\">Open Original: <a href=\"" + originalUrlText + "\">" + articleUrl + "</a></p>\n" +
                 "\t\t\t\t\t\t</header>\n" +
                 "\t\t\t\t\t\t<article>"
         return htmlHeader

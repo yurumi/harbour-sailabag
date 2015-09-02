@@ -56,9 +56,11 @@ Rectangle {
     
     Label {
         id: loadScreenText
-        text: qsTr("Loading...")
+        text: qsTr("Loading")
+        font.family: Theme.fontFamilyHeading
+        font.pixelSize: Theme.fontSizeLarge
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: 150
+        anchors.verticalCenterOffset: -120
     }
     
     BusyIndicator {
@@ -67,17 +69,4 @@ Rectangle {
         running: loadScreen.visible
         size: BusyIndicatorSize.Large 
     }
-
-    // Rectangle {
-    //     id: progressBarBackground
-    //     height: 20
-    //     color: "blue"
-    //     anchors{
-    //         left: parent.left
-    //         right: parent.right
-    //         verticalCenter: parent.verticalCenter
-    //         margins: Theme.paddingLarge
-    //     }
-        
-    // }
 }
