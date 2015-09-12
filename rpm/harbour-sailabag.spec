@@ -13,8 +13,8 @@ Name:       harbour-sailabag
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Sailfish wallabag client
-Version:    0.9
-Release:    2
+Version:    1.1
+Release:    1
 Group:      Qt/Qt
 License:    LICENSE
 URL:        http://example.org/

@@ -81,7 +81,7 @@ Page {
         //     }
         // }
 
-        VerticalScrollDecorator { flickable: webview }
+        VerticalScrollDecorator { flickable: webview; color: "black" }
 
         Component.onCompleted: {
             webview.loadHtml(createHtmlHeader() + articleContent + createHtmlFooter()) }
@@ -108,7 +108,7 @@ Page {
         //     loadScreen.progress = loadProgress
         // }
     }
-
+    
     function createHtmlHeader(){
         var originalUrlText = ""
         var htmlHeader = "<html>\n" +
@@ -124,9 +124,14 @@ Page {
                 "\t\t\ta {\n" +
                 "\t\t\t\tcolor: #000;\n" +
                 "\t\t\t\tfont-weight: bold;\n" +
-                "\t\t\t}\n" +                  
+                "\t\t\t}\n" +
+                "\t\t\th1, h2, h3, h4 {\n" +
+                "\t\t\tfont-family: 'PT Sans', sans-serif;\n" +
+                "\t\t\ttext-transform: uppercase;\n" +
+                "\t\t\tfont-size: 1.2em;\n" +
+                "\t\t\t}\n" +
                 "\t\t</style>\n" +
-                // "\t\t<link rel=\"stylesheet\" href=\"main.css\" media=\"all\" id=\"main-theme\">\n" +
+                // "\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"main.css\" media=\"all\" id=\"main-theme\">\n" +
                 // "\t\t<link rel=\"stylesheet\" href=\"ratatouille.css\" media=\"all\" id=\"extra-theme\">\n" +
                 "\t</head>\n" +
                 "\t\t<div id=\"main\">\n" +

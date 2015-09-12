@@ -51,6 +51,10 @@
         <source>Stage for deletion</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Share</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CommitScreen</name>
@@ -168,6 +172,21 @@
     <message>
         <source>Database is going to be cleared</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ShareArticle</name>
+    <message>
+        <source>Share article</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URL copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source></source>
+        <translation></translation>
     </message>
 </context>
 <context>

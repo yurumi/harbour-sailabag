@@ -170,6 +170,13 @@ Page {
                         text: qsTr("Stage for deletion")
                         onClicked: stageForDeletion()
                     }       
+                    MenuItem {
+                        text: qsTr("Share")
+                        onClicked: {
+                            shareArticle.articleURL = url
+                            shareArticle.state = "visible"
+                        }
+                    }       
                 }
             } // contextMenu
 
@@ -179,6 +186,8 @@ Page {
 
     } // ListView
 
+    ShareArticle { id: shareArticle;}
+    
     BusyIndicator {
         id: busyIndicator
         anchors.centerIn: parent
