@@ -28,13 +28,27 @@ Page {
     id: syncpage
 
     property SyncModel syncModel: SyncModel { }
-    property variant unreadArticlesModel: null
+    property bool commitMutex: true
 
+    function getCommitLock()
+    {
+        if(commitMutex){
+            commitMutex = false
+            return true
+        }else{
+            return false
+        }
+    }
+
+    function releaseCommitLock(){
+        commitMutex = true
+    }
+    
     function updateModel()
     {
         ArticlesDatabase.queryStagedArticles(syncModel)
     }
-    
+
     Component.onCompleted: {
         updateModel();
     }
@@ -51,7 +65,6 @@ Page {
                 height: sectionLBL.height
                 color: Theme.secondaryColor
                 opacity: 0.1
-                // anchors.horizontalCenter: sectionLBL.horizontalCenter
                 anchors.verticalCenter: sectionLBL.verticalCenter
             }
 
@@ -62,7 +75,6 @@ Page {
                     left: parent.left
                     right: parent.right
                     bottom: parent.bottom
-                    // margins: Theme.paddingLarge
                 }
                 // font.bold: true
                 color: Theme.highlightColor
@@ -100,8 +112,6 @@ Page {
         }
 
         delegate: ArticleDelegate{
-            // menu: contextMenuSync
-
             function commit() {
                 var serverurl = mainwindow.settings.serverURL
                 var username = mainwindow.settings.userName
@@ -110,41 +120,50 @@ Page {
                 if ( (serverurl === "") || (username === "") || (password === "") ){
                     mainwindow.pushNotification("INFO", qsTr("Login information incomplete"), qsTr("Check settings page."))    
                 }else{
-                    // Store ID before index becomes invalid
-                    var _id = id
-                                                        
-                    if(deletionFlag){               
-                        remorseAction("Commit deletion", function() {
-                            pageStack.push(Qt.resolvedUrl("DeleteArticlePage.qml"), {
-                                "action": "delete",
-                                "serverurl": serverurl,
-                                "username": username,
-                                "password": password,
-                                "delID": _id})
-                                
+                    var lock = getCommitLock()
+
+                    if(lock){                    
+                        // Store ID before index becomes invalid
+                        var _id = id
+                        
+                        if(deletionFlag){               
+                            remorseAction("Commit deletion", function() {
+                                pageStack.push(Qt.resolvedUrl("ServerInteractionPage.qml"), {
+                                    "action": "delete",
+                                    "serverurl": serverurl,
+                                    "username": username,
+                                    "password": password,
+                                    "delID": _id})
+                                    
                                 syncListView.model.remove(index)
                                 ArticlesDatabase.removeID(_id)
-                        }, 1000)
-                    }
-                    else{               
-                        remorseAction("Commit archiving", function() {
-                            pageStack.push(Qt.resolvedUrl("DeleteArticlePage.qml"), {
-                                "action": "toggle_archive",
-                                "serverurl": serverurl,
-                                "username": username,
-                                "password": password,
-                                "delID": _id})
-                                
+                                releaseCommitLock()
+                            }, 1000)
+                        }
+                        else{               
+                            remorseAction("Commit archiving", function() {
+                                pageStack.push(Qt.resolvedUrl("ServerInteractionPage.qml"), {
+                                    "action": "toggle_archive",
+                                    "serverurl": serverurl,
+                                    "username": username,
+                                    "password": password,
+                                    "delID": _id})
+                                        
                                 syncListView.model.remove(index)
                                 ArticlesDatabase.removeID(_id)
-                        }, 1000)
+                                releaseCommitLock()
+                            }, 1000)
+                        }
+                    }else{
+                        mainwindow.pushNotification("INFO", qsTr("Please wait"), qsTr("No parallel commits allowed."))    
                     }
                 }
             }
 
             function markAsUnread() {
                 remorseAction(qsTr("Mark as unread"), function() {
-                    ArticlesDatabase.markAsUnread(syncModel, unreadArticlesModel, id)
+                    ArticlesDatabase.markAsUnread(id)
+                    syncListView.model.remove(index)
                 }, 2000)
             }
 
@@ -154,7 +173,7 @@ Page {
                 id: contextMenu
                 ContextMenu {
                     MenuItem {
-                        text: "Mark as unread"
+                        text: qsTr("Mark as unread")
                         onClicked: markAsUnread()
                     }
                 }

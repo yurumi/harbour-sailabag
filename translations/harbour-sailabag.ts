@@ -20,22 +20,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clipboard is empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark URL to copy to the clipboard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Login information incomplete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check settings page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Bag clipboard!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -57,20 +41,24 @@
     </message>
 </context>
 <context>
-    <name>CommitScreen</name>
+    <name>ArticleViewPage</name>
     <message>
-        <source>Committing</source>
+        <source>Stage for archiving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for deletion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DeleteArticlePage</name>
+    <name>CommitScreen</name>
     <message>
-        <source>Failed to sign in</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server error, check settings.</source>
+        <source>Committing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -129,7 +117,7 @@
     </message>
 </context>
 <context>
-    <name>PostArticlePage</name>
+    <name>ServerInteractionPage</name>
     <message>
         <source>Failed to sign in</source>
         <translation type="unfinished"></translation>
@@ -188,6 +176,18 @@
         <source></source>
         <translation></translation>
     </message>
+    <message>
+        <source>E-Mail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter comment (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SignInPage</name>
@@ -228,6 +228,37 @@
     </message>
     <message>
         <source>Check settings page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No parallel commits allowed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>harbour-sailabag</name>
+    <message>
+        <source>Login information incomplete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check settings page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clipboard is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark URL to copy to the clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clipboard is going to be sent</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

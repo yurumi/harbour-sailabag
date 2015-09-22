@@ -30,27 +30,30 @@ Item {
     states: [
     State {
         name: "visible"
-        PropertyChanges { target: root; visible: true }
+        PropertyChanges { target: backRect; visible: true }
+        PropertyChanges { target: shareArticleRect; y: root.height - shareArticleRect.height }
+    },
+    State {
+        name: "visibleWithComment"
+        PropertyChanges { target: backRect; visible: true }
+        PropertyChanges { target: shareArticleRect; y: root.height - shareArticleRect.height - commentTF.height}
     },
     State {
         name: "invisible"
-        PropertyChanges { target: root; visible: false }
+        PropertyChanges { target: backRect; visible: false }
+        PropertyChanges { target: shareArticleRect; y: root.height }
     }
     ]
 
-    // transitions: Transition {
-    //     from: "show"; to: "hide"; reversible: false
-    //     NumberAnimation { properties: "opacity"; duration: 1000; easing.type: Easing.InOutQuad }
-    // }
+    transitions: Transition {
+        from: "invisible"; to: "visible"; reversible: true
+        NumberAnimation { properties: "y"; duration: 400; easing.type: Easing.InOutQuad }
+        NumberAnimation { properties: "opacity"; duration: 400; easing.type: Easing.InOutQuad }
+    }
     
     Rectangle {
         id: backRect
-        anchors {
-            top: parent.top
-            bottom: shareArticle.top
-            left: parent.left
-            right: parent.right
-        }
+        anchors.fill: parent
         color: "black"
         opacity: 0.5
 
@@ -62,14 +65,11 @@ Item {
         }
     }
     Rectangle {
-        id: shareArticle
-        // width: parent.width
+        id: shareArticleRect
+        width: parent.width
         height: 200
-        anchors {
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
-        }
+        x: 0
+        y: parent.height
         color: Qt.rgba(Theme.secondaryHighlightColor.r, Theme.secondaryHighlightColor.g, Theme.secondaryHighlightColor.b, 1.0) 
 
         MouseArea {
@@ -84,6 +84,7 @@ Item {
             text: qsTr("Share article")
             horizontalAlignment: Text.AlignHCenter
             font.family: Theme.fontFamilyHeading
+            font.bold: true
             font.pixelSize: Theme.fontSizeLarge
             anchors {
                 top: parent.top
@@ -102,14 +103,13 @@ Item {
                 margins: Theme.paddingLarge         
             }
             Button {
-                text: "E-Mail"
+                text: qsTr("E-Mail")
                 onClicked: {
-                    Qt.openUrlExternally("mailto:" + "?subject=Somebody shared an article with you from wallabag" + "&body=" + root.articleURL)
-                    root.state = "invisible"
+                    root.state = "visibleWithComment"
                 }
             }
             Button {
-                text: "Clipboard"
+                text: qsTr("Clipboard")
                 onClicked: {
                     Clipboard.text = root.articleURL
                     root.state = "invisible"
@@ -118,4 +118,49 @@ Item {
             }
         }      
     }
+
+    Rectangle {
+        id: commentRect
+        color: Qt.rgba(shareArticleRect.color.r - 0.1, shareArticleRect.color.g - 0.1, shareArticleRect.color.b - 0.1, 1.0)
+        anchors {
+            top: shareArticleRect.bottom
+            left: parent.left
+            right: parent.right
+        }
+        height: 100
+
+        Row {
+            anchors {
+                fill: parent
+                margins: Theme.paddingLarge
+                rightMargin: 40
+            }
+
+            TextField {
+                id: commentTF
+                width: parent.width - emailSendButton.width 
+                placeholderText: qsTr("Enter comment (optional)")
+            }
+
+            Rectangle{
+                width: 100
+                height: 60
+                color: shareArticleRect.color
+                // anchors {
+                //     rightMargin: 20 
+                // }
+                
+                IconButton {
+                    id: emailSendButton
+                    icon.source: "image://theme/icon-m-enter-next"
+                    anchors.centerIn: parent
+                    onClicked: {
+                        Qt.openUrlExternally("mailto:" + "?subject=" + settings.userName + " shared an article with you from wallabag"
+                        + "&body=" + commentTF.text + " " + root.articleURL)
+                        root.state = "invisible"
+                    }
+                }
+            }
+        } // Row
+    } // commentRect
 }

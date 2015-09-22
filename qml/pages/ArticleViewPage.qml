@@ -22,6 +22,7 @@ import QtWebKit 3.0
 import Sailfish.Silica 1.0
 
 import "../components"
+import "../js/articles/ArticlesDatabase.js" as ArticlesDatabase
 
 Page {
     id: articleview
@@ -29,6 +30,7 @@ Page {
     property string articleUrl: ""
     property string articleTitle: ""
     property string articleContent: ""
+    property variant articlesModel: null
 
     onStatusChanged: {
         if(status === PageStatus.Activating){
@@ -42,6 +44,25 @@ Page {
         webview.visible = false
     }
 
+    function markAsRead() {
+        remorse.execute(qsTr("Stage for archiving"), function() {
+            ArticlesDatabase.markAsRead(articlesModel, articleUrl)
+            pageStack.navigateBack(PageStackAction.Animated) }, 2000)
+    }
+
+    function stageForDeletion() {
+        remorse.execute(qsTr("Stage for deletion"), function() {
+            ArticlesDatabase.stageForDeletion(articlesModel, articleUrl)
+            pageStack.navigateBack(PageStackAction.Animated) }, 2000)
+    }
+
+    function shareArticle() {
+        shareArticlePopup.articleURL = articleUrl
+        shareArticlePopup.state = "visible"
+    }
+    
+    RemorsePopup { id: remorse }
+    
     SilicaWebView {
         id: webview
         anchors.fill: parent
@@ -51,48 +72,39 @@ Page {
             // wrapMode: Text.Elide
         }
 
-        // header: Rectangle {
-        //     width: parent.width
-        //     height: titleLabel.height + 20
-        //     color: Theme.secondaryColor
-            
-        //     // anchors {
-        //     //     top: parent.top
-        //     //     left: parent.left
-        //     //     right: parent.right
-        //     // }
-            
-        //     Label {
-        //         id: titleLabel
-        //         // width: parent.width
-        //         text: articleTitle
-        //         horizontalAlignment: Text.AlignRight
-        //         font.family: Theme.fontFamilyHeading
-        //         font.pixelSize: Theme.fontSizeLarge
-        //         wrapMode: Text.Wrap
-        //         anchors {
-        //             // centerIn: parent
-        //             left: parent.left
-        //             right: parent.right
-        //             margins: Theme.paddingLarge
-        //         }
-
-        //         color: Theme.primaryColor
-        //     }
-        // }
-
         VerticalScrollDecorator { flickable: webview; color: "black" }
 
         Component.onCompleted: {
             webview.loadHtml(createHtmlHeader() + articleContent + createHtmlFooter()) }
 
-        // TODO: archive / delete from within article view
-        // PushUpMenu {
-        //     MenuItem {
-        //         text: qsTr("Scroll to top")
-        //         // onClicked: { articleListView.scrollToTop() }
-        //     }
-        // }
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Stage for archiving")
+                onClicked: { markAsRead() }
+            }
+            MenuItem {
+                text: qsTr("Stage for deletion")
+                onClicked: { stageForDeletion() }
+            }
+            MenuItem {
+                text: qsTr("Share")
+                onClicked: { shareArticle() }
+            }            
+        }
+        PushUpMenu {
+            MenuItem {
+                text: qsTr("Share")
+                onClicked: { shareArticle() }
+            }            
+            MenuItem {
+                text: qsTr("Stage for deletion")
+                onClicked: { stageForDeletion() }
+            }
+            MenuItem {
+                text: qsTr("Stage for archiving")
+                onClicked: { markAsRead() }
+            }
+        }
 
         onLoadingChanged: {
             if(loadRequest.status === WebView.LoadStartedStatus){
@@ -103,10 +115,6 @@ Page {
                 webview.visible = true
             }
         }
-
-        // onLoadProgressChanged: {
-        //     loadScreen.progress = loadProgress
-        // }
     }
     
     function createHtmlHeader(){
@@ -157,5 +165,5 @@ Page {
     }
 
     LoadScreen {id: loadScreen}
-
+    ShareArticle { id: shareArticlePopup;}
 }

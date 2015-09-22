@@ -21,58 +21,73 @@
     </message>
     <message>
         <source>Visit settings page then synchronize.</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen prüfen, dann Artikel runterladen.</translation>
     </message>
     <message>
         <source>Go to sync page</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronisierung</translation>
     </message>
     <message>
         <source>Download articles</source>
-        <translation type="unfinished"></translation>
+        <translation>Artikel herunterladen</translation>
     </message>
     <message>
         <source>Clipboard is empty</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Zwischenablage ist leer</translation>
     </message>
     <message>
         <source>Mark URL to copy to the clipboard.</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">URL markieren, um in Zwischenablage zu kopieren.</translation>
     </message>
     <message>
         <source>Login information incomplete</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Zugangsdaten fehlerhaft</translation>
     </message>
     <message>
         <source>Check settings page.</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Einstellungen überprüfen.</translation>
     </message>
     <message>
         <source>Bag clipboard!</source>
-        <translation type="unfinished"></translation>
+        <translation>Zwischenablage an Server senden</translation>
     </message>
     <message>
         <source>Unread Articles</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungelesene Artikel</translation>
     </message>
     <message>
         <source>Stage for archiving</source>
-        <translation type="unfinished"></translation>
+        <translation>Vormerken zum Archivieren</translation>
     </message>
     <message>
         <source>Stage for deletion</source>
-        <translation type="unfinished"></translation>
+        <translation>Vormerken zum Löschen</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Teilen</translation>
+    </message>
+</context>
+<context>
+    <name>ArticleViewPage</name>
+    <message>
+        <source>Stage for archiving</source>
+        <translation>Vormerken zum Archivieren</translation>
+    </message>
+    <message>
+        <source>Stage for deletion</source>
+        <translation>Vormerken zum Löschen</translation>
+    </message>
+    <message>
+        <source>Share</source>
+        <translation>Teilen</translation>
     </message>
 </context>
 <context>
     <name>CommitScreen</name>
     <message>
         <source>Committing</source>
-        <translation type="unfinished"></translation>
+        <translation>Übertragung läuft</translation>
     </message>
 </context>
 <context>
@@ -83,17 +98,6 @@
     </message>
 </context>
 <context>
-    <name>DeleteArticlePage</name>
-    <message>
-        <source>Failed to sign in</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server error, check settings.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>DownloadManager</name>
     <message>
         <source>QNetworkError::%1</source>
@@ -101,76 +105,50 @@
     </message>
     <message>
         <source>XML error</source>
-        <translation type="unfinished"></translation>
+        <translation>XML Fehler</translation>
     </message>
     <message>
         <source>Check user ID and token.</source>
-        <translation type="unfinished"></translation>
+        <translation>Prüfe Nutzer ID und Token.</translation>
     </message>
     <message>
         <source>No RSS node found.  Check user ID and token.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein RSS Knoten gefunden. Prüfe Nutzer ID und Token.</translation>
     </message>
     <message>
         <source>No channel found. Check user ID and token.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Kanal gefunden. Prüfe Nutzer ID und Token.</translation>
     </message>
     <message>
         <source>Network error</source>
-        <translation type="unfinished"></translation>
+        <translation>Netzwerkfehler</translation>
     </message>
     <message>
         <source>Server unknown. Check server settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Server unbekannt. Prüfe Server-Einstellungen.</translation>
     </message>
     <message>
         <source>Remote content not found. Check server settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Inhalte nicht gefunden. Prüfe Server-Einstellungen.</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannter Fehler</translation>
     </message>
     <message>
         <source>Html error</source>
-        <translation type="unfinished"></translation>
+        <translation>Html Fehler</translation>
     </message>
     <message>
         <source>Check server sanity.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>FirstPage</name>
-    <message>
-        <source>Show Page 2</source>
-        <translation type="vanished">Zur Seite 2</translation>
-    </message>
-    <message>
-        <source>UI Template</source>
-        <translation type="vanished">UI-Vorlage</translation>
-    </message>
-    <message>
-        <source>Hello Sailors</source>
-        <translation type="vanished">Hallo Matrosen</translation>
+        <translation>Prüfe Server-Einstellungen.</translation>
     </message>
 </context>
 <context>
     <name>LoadScreen</name>
     <message>
         <source>Loading</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PostArticlePage</name>
-    <message>
-        <source>Failed to sign in</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server error, check settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Artikel wird geladen</translation>
     </message>
 </context>
 <context>
@@ -196,6 +174,17 @@
     </message>
 </context>
 <context>
+    <name>ServerInteractionPage</name>
+    <message>
+        <source>Failed to sign in</source>
+        <translation>Anmeldung fehlgeschlagen</translation>
+    </message>
+    <message>
+        <source>Server error, check settings.</source>
+        <translation>Server Fehler, prüfe Einstellungen.</translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Reset Database</source>
@@ -211,15 +200,15 @@
     </message>
     <message>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Nutzer ID</translation>
     </message>
     <message>
         <source>User Token</source>
-        <translation type="unfinished"></translation>
+        <translation>Nutzer Token</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Login Name</source>
@@ -227,44 +216,56 @@
     </message>
     <message>
         <source>Clear local database</source>
-        <translation type="unfinished"></translation>
+        <translation>Datenbank löschen (lokal)</translation>
     </message>
     <message>
         <source>Database is going to be cleared</source>
-        <translation type="unfinished"></translation>
+        <translation>Datenbank wird gelöscht</translation>
     </message>
 </context>
 <context>
     <name>ShareArticle</name>
     <message>
         <source>Share article</source>
-        <translation type="unfinished"></translation>
+        <translation>Artikel teilen</translation>
     </message>
     <message>
         <source>URL copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>URL in Zwischenablage gespeichert</translation>
     </message>
     <message>
         <source></source>
         <translation></translation>
+    </message>
+    <message>
+        <source>E-Mail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clipboard</source>
+        <translation>Zwischenablage</translation>
+    </message>
+    <message>
+        <source>Enter comment (optional)</source>
+        <translation>Kommentar (optional)</translation>
     </message>
 </context>
 <context>
     <name>SignInPage</name>
     <message>
         <source>Failed to sign in</source>
-        <translation type="unfinished"></translation>
+        <translation>Anmeldefehler</translation>
     </message>
     <message>
         <source>Server error, check settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Server Fehler, prüfe Einstellungen.</translation>
     </message>
 </context>
 <context>
     <name>SyncPage</name>
     <message>
         <source>No articles marked for deletion or marked as read.</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Artikel zum Löschen oder Archivieren vorgemerkt.</translation>
     </message>
     <message>
         <source>Synchronize</source>
@@ -272,26 +273,57 @@
     </message>
     <message>
         <source>Sync Overview</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausstehende Aktionen</translation>
     </message>
     <message>
         <source>Mark as unread</source>
-        <translation type="unfinished"></translation>
+        <translation>Als ungelesen markieren</translation>
     </message>
     <message>
         <source>Staged for Deletion</source>
-        <translation type="unfinished"></translation>
+        <translation>Vormerkungen zum Löschen</translation>
     </message>
     <message>
         <source>Staged for archiving</source>
-        <translation type="unfinished"></translation>
+        <translation>Vormerkungen zum Archivieren</translation>
     </message>
     <message>
         <source>Login information incomplete</source>
-        <translation type="unfinished"></translation>
+        <translation>Login Daten unvollständig</translation>
     </message>
     <message>
         <source>Check settings page.</source>
+        <translation>Prüfe Einstellungen.</translation>
+    </message>
+    <message>
+        <source>Please wait</source>
+        <translation>Bitte warten</translation>
+    </message>
+    <message>
+        <source>No parallel commits allowed.</source>
+        <translation>Gleichzeitige Übertragungen nicht erlaubt.</translation>
+    </message>
+</context>
+<context>
+    <name>harbour-sailabag</name>
+    <message>
+        <source>Login information incomplete</source>
+        <translation>Zugangsdaten unvollständig</translation>
+    </message>
+    <message>
+        <source>Check settings page.</source>
+        <translation>Einstellungen überprüfen.</translation>
+    </message>
+    <message>
+        <source>Clipboard is empty</source>
+        <translation>Zwischenablage ist leer</translation>
+    </message>
+    <message>
+        <source>Mark URL to copy to the clipboard.</source>
+        <translation>URL markieren, um in Zwischenablage zu kopieren.</translation>
+    </message>
+    <message>
+        <source>Clipboard is going to be sent</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

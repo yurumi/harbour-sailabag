@@ -38,19 +38,68 @@ ApplicationWindow
     property alias settings: settings
     property alias downloadmanager: downloadmanager
 
+    signal downloadActive()
+    signal downloadFinished()
+    signal downloadError()
+
+    function downloadFinishedSlot()
+    {
+        downloadFinished()
+    }
+
+    function downloadErrorSlot()
+    {
+        downloadError()
+    }
+
+    function downloadUnreadArticles()
+    {
+        downloadActive()
+        var serverURL = mainwindow.settings.serverURL
+        var userID = mainwindow.settings.userID
+        var userToken = mainwindow.settings.userToken
+        ArticlesDatabase.invalidateEntries()
+        mainwindow.downloadmanager.downloadFeed(serverURL, userID, userToken)
+    }
+
     function store (url, id, title, content, pubDate)
     {
         ArticlesDatabase.store(url, id, title, content, pubDate);
     }
 
-    // function sendClipboard()
-    // {
-    //     if (Clipboard.hasText) {
-    //         pageStack.push(Qt.resolvedUrl("SaveArticlePage.qml"), {"articleURL": Clipboard.text})
-    //     }else{
-    //         mainwindow.pushNotification("INFO", qsTr("Clipboard is empty"), qsTr("Mark URL to copy to the clipboard."))
-    //     }           
-    // }
+    // Workaround for empty clipboard when app not active (cover view)
+    function remorseSendClipboard()
+    {
+        remorseSendClipboard.execute(qsTr("Clipboard is going to be sent"),
+                                          function() {
+                                              sendClipboard()
+                                          }, 50)
+    }
+    
+    function sendClipboard()
+    {
+        if (Clipboard.hasText) {
+            var serverurl = mainwindow.settings.serverURL
+            var username = mainwindow.settings.userName
+            var password = mainwindow.settings.userPassword
+
+            if ( (serverurl === "") || (username === "") || (password === "") ){
+                mainwindow.pushNotification("INFO", qsTr("Login information incomplete"), qsTr("Check settings page."))    
+            }else{
+                pageStack.push(Qt.resolvedUrl("pages/ServerInteractionPage.qml"), {
+                    "action": "post_article",
+                    "serverurl": serverurl,
+                    "username": username,
+                    "password": password,
+                    "delID": -1})
+            }
+        }else{
+            mainwindow.pushNotification("INFO", qsTr("Clipboard is empty"), qsTr("Mark URL to copy to the clipboard."))
+        }           
+    }
+
+    // Workaround for empty clipboard when app not active (cover view)
+    RemorsePopup { id: remorseSendClipboard }
 
     Settings
     {
@@ -78,6 +127,10 @@ ApplicationWindow
      
             // articles
             ArticlesDatabase.load();
+
+            // download manager
+            mainwindow.downloadmanager.syncFinished.connect(downloadFinishedSlot);
+            mainwindow.downloadmanager.downloadError.connect(downloadErrorSlot);
 
             // Testing
             // Clipboard.text = "http://www.w3schools.com/jsref/met_document_queryselector.asp"

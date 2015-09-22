@@ -87,7 +87,6 @@ function store(url, id, title, content, pubDate)
 	else{
 	    var title_san = sanitizeString(title)
 	    instance().transaction(function(tx) {
-		// tx.executeSql("INSERT OR REPLACE INTO Articles (url, id, title, content, pubDate, favoriteFlag, archiveFlag, deletionFlag) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [url, id, title_san, content, pubDate, 0, 0, 0]);
 		tx.executeSql("INSERT OR IGNORE INTO Articles (url, id, title, content, pubDate, favoriteFlag, archiveFlag, deletionFlag, syncState) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", [url, id, title_san, content, pubDate, 0, 0, 0, 0]);
 	    });
 	}
@@ -121,40 +120,13 @@ function queryStagedArticles(model)
 	if(archs.rows.length)
             model.appendRows(archs.rows);
     });
-    
-    // queryArticlesToDelete(model)
-    // queryArticlesToMarkAsRead(model)
 }
-
-// function queryArticlesToMarkAsRead(model)
-// {  
-//     instance().transaction(function(tx) {
-//         var res = tx.executeSql("SELECT * FROM Articles WHERE archiveFlag=1")
-
-//         if(res.rows.length)
-//             model.populate(res.rows);
-//     });
-// }
-
-// function queryArticlesToDelete(model)
-// {  
-//     instance().transaction(function(tx) {
-//         var res = tx.executeSql("SELECT * FROM Articles WHERE deletionFlag=1")
-
-//         if(res.rows.length)
-//             model.populate(res.rows);
-//         // else
-//         //     model.clear();
-//     });
-// }
 
 function markAsRead(model, readUrl)
 {
     instance().transaction(function(tx) {
         tx.executeSql("UPDATE Articles SET archiveFlag=1 WHERE url='" + readUrl + "'")
     });
-
-    queryUnreadArticles(model)
 }
 
 function stageForDeletion(model, delUrl)
@@ -162,18 +134,12 @@ function stageForDeletion(model, delUrl)
     instance().transaction(function(tx) {
         tx.executeSql("UPDATE Articles SET deletionFlag=1 WHERE url='" + delUrl + "'")
     });
-
-    queryUnreadArticles(model)
 }
 
-function markAsUnread(syncModel, unreadArticlesModel, id)
+function markAsUnread(id)
 {
     instance().transaction(function(tx) {
         tx.executeSql("UPDATE Articles SET deletionFlag=0 WHERE id=?", [id])
         tx.executeSql("UPDATE Articles SET archiveFlag=0 WHERE id=?", [id] )
     });
-
-    // queryArticlesToDelete(syncModel)
-    queryStagedArticles(syncModel)
-    queryUnreadArticles(unreadArticlesModel)
 }
