@@ -2,33 +2,9 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
-    <name>ArticleOverviewPage</name>
+    <name>ArchivedArticlesDelegate</name>
     <message>
-        <source>Visit settings page then synchronize.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Go to sync page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Download articles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bag clipboard!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unread Articles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stage for archiving</source>
+        <source>Archived Articles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -37,6 +13,22 @@
     </message>
     <message>
         <source>Share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pull down to synchronize.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update archived articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for mark as unread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for toggle favorite</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -106,6 +98,33 @@
     </message>
     <message>
         <source>Check server sanity.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FavoriteArticlesDelegate</name>
+    <message>
+        <source>Favorite Articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for deletion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pull down to synchronize.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update favorite articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for toggle favorite</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -190,17 +209,6 @@
     </message>
 </context>
 <context>
-    <name>SignInPage</name>
-    <message>
-        <source>Failed to sign in</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server error, check settings.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SyncPage</name>
     <message>
         <source>No articles marked for deletion or marked as read.</source>
@@ -208,14 +216,6 @@
     </message>
     <message>
         <source>Sync Overview</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark as unread</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Staged for Deletion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -236,6 +236,104 @@
     </message>
     <message>
         <source>No parallel commits allowed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staged for deletion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staged for toggle favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staged for unread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Commit deletion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Commit archiving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Commit mark as unread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Commit toggle favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UnreadArticlesDelegate</name>
+    <message>
+        <source>Visit settings page then synchronize.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to sync page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bag clipboard!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unread Articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for archiving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for deletion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update unread articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stage for toggle favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VersionUpdateInformationPage</name>
+    <message>
+        <source>Old version of articles database found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete local database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update local database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Changelog:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statistics (12/28/2015):</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

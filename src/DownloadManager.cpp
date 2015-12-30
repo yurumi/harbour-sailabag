@@ -24,18 +24,23 @@
 using namespace std;
 
 DownloadManager::DownloadManager(QObject *parent)
-  : QObject(parent)
+  : QObject(parent),
+    m_lastFeedType("invalid_feed_type")
 {
 }
 
-void DownloadManager::downloadFeed(const QString &url, const int &userID, const QString &userToken)
+void DownloadManager::downloadFeed(const QString &url, const int &userID, const QString &userToken, const QString &feedType)
 {
+  m_lastFeedType = feedType;
+  
   SslIgnoreNetworkAccessManager *manager = new SslIgnoreNetworkAccessManager(this);
   connect(manager, SIGNAL(finished(QNetworkReply*)),
           this, SLOT(replyFinished(QNetworkReply*)));
  
   QString requestString(url);
-  requestString.append("/?feed&type=home&user_id=");
+  requestString.append("/?feed&type=");
+  requestString.append(feedType);
+  requestString.append("&user_id=");
   requestString.append(QString::number(userID));
   requestString.append("&token=");
   requestString.append(userToken);
@@ -59,12 +64,14 @@ void DownloadManager::updateSignInState(const QString &url)
 
 void DownloadManager::replyFinished(QNetworkReply* reply)
 {
+  // TODO: Error notification, when no bytes were received --> check server settings (not just base domain)
+  // qDebug() << "REPLY FINISHED. RECEIVED BYTES: " << reply->readBufferSize();
   if(reply->error() == QNetworkReply::NoError){
     QDomDocument doc("mydocument");
     QString errorStr;
     int errorLine;
     int errorColumn;
-
+    
     if (!doc.setContent(reply, true, &errorStr, &errorLine, &errorColumn)) {
       emit notification("ERROR", tr("XML error"), tr("Check user ID and token."));
     }else{
@@ -165,11 +172,10 @@ void DownloadManager::parseItem(const QDomElement & e)
   content = e.firstChildElement("description").text();
   pubDate = e.firstChildElement("pubDate").text();
   sourceUrl = e.firstChildElement("source").attribute("url");
-  
 
   QUrlQuery u(sourceUrl);
   QString id = u.queryItemValue("id");
   
-  emit itemParsed(url, id.toInt(), title, content, pubDate);
+  emit itemParsed(url, id.toInt(), title, content, pubDate, m_lastFeedType);
 }
 

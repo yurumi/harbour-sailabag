@@ -26,14 +26,12 @@ OTHER_FILES += qml/harbour-sailabag.qml \
     rpm/harbour-sailabag.yaml \
     translations/*.ts \
     harbour-sailabag.desktop \
-    qml/pages/ArchiveOverviewPage.qml \
     qml/pages/ArticleOverviewPage.qml \
     qml/pages/SettingsPage.qml \
     qml/pages/ArticleViewPage.qml \
     qml/js/articles/ArticlesDatabase.js \
     qml/models/ArticlesModel.qml \
     qml/models/Settings.qml \
-    qml/pages/SignInPage.qml \
     qml/js/Console.js \
     qml/js/settings/Database.js
 
@@ -56,4 +54,11 @@ HEADERS += \
 
 RESOURCES += \
     res.qrc
+
+DISTFILES += \
+    qml/components/UnreadArticlesDelegate.qml \
+    qml/components/ArchivedArticlesDelegate.qml \
+    qml/components/FavoriteArticlesDelegate.qml \
+    qml/pages/VersionUpdateInformationPage.qml \
+    qml/pages/SyncPage.qml
 

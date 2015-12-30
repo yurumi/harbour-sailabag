@@ -26,6 +26,7 @@
 #include <QGuiApplication>
 #include <QtGui>
 #include <QtQml>
+#include <QtDebug>
 #include <QProcess>
 #include <QQuickView>
 #include <sailfishapp.h>

@@ -4,7 +4,7 @@
 
 function instance()
 {
-    return openDatabase("1.0");
+    return openDatabase("");
 }
 
 // function checkDBUpgrade()

@@ -33,12 +33,13 @@ class DownloadManager : public QObject
 public:
   explicit DownloadManager(QObject *parent = 0);
 
-  Q_INVOKABLE void downloadFeed(const QString &url, const int &userID, const QString &userToken);
+  // feedType: "home", "fav", "archive"
+  Q_INVOKABLE void downloadFeed(const QString &url, const int &userID, const QString &userToken, const QString &feedType);
   
   Q_INVOKABLE void updateSignInState(const QString &url);
 				    
 signals:
-  void itemParsed(QString, int, QString, QString, QString);
+  void itemParsed(QString url, int id, QString title, QString content, QString pubdate, QString articleCategory);
   void syncFinished();
   void downloadError();                   
   void notification(QString, QString, QString);
@@ -50,6 +51,8 @@ public slots:
 
 private:
   void parseItem(const QDomElement & e);
+
+  QString m_lastFeedType;
 };
 
 #endif // DOWNLOADMANAGER_H

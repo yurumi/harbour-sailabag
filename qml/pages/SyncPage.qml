@@ -27,7 +27,7 @@ import "../js/articles/ArticlesDatabase.js" as ArticlesDatabase
 Page {
     id: syncpage
 
-    property SyncModel syncModel: SyncModel { }
+    property ArticlesModel syncModel: ArticlesModel { }
     property bool commitMutex: true
 
     function getCommitLock()
@@ -70,7 +70,18 @@ Page {
 
             Label {
                 id: sectionLBL
-                text: section == "delete" ? qsTr("Staged for Deletion") : qsTr("Staged for archiving")
+                text: {
+                    switch(section){
+                        case "delete":
+                        return qsTr("Staged for deletion")
+                        case "archive":
+                        return qsTr("Staged for archiving")
+                        case "unarchive":
+                        return qsTr("Staged for unread")
+                        case "toggle_fav":
+                        return qsTr("Staged for toggle favorite")
+                    }
+                }
                 anchors{
                     left: parent.left
                     right: parent.right
@@ -91,7 +102,7 @@ Page {
         model: syncModel
         spacing: 10
 
-        section.property: "sectionString"
+        section.property: "syncAction"
         section.criteria: ViewSection.FullString
         section.delegate: sectionHeading
 
@@ -112,6 +123,17 @@ Page {
         }
 
         delegate: ArticleDelegate{
+            id: articleDelegate
+            
+            RemorseItem {
+                id: remorse
+                onCanceled: releaseCommitLock()
+            }
+            
+            function showRemorseItem(remorseText, func) {
+                remorse.execute(articleDelegate, remorseText, func, 1000)
+            }
+            
             function commit() {
                 var serverurl = mainwindow.settings.serverURL
                 var username = mainwindow.settings.userName
@@ -126,8 +148,8 @@ Page {
                         // Store ID before index becomes invalid
                         var _id = id
                         
-                        if(deletionFlag){               
-                            remorseAction("Commit deletion", function() {
+                        if(syncAction==="delete"){
+                            showRemorseItem(qsTr("Commit deletion"), function(){
                                 pageStack.push(Qt.resolvedUrl("ServerInteractionPage.qml"), {
                                     "action": "delete",
                                     "serverurl": serverurl,
@@ -138,10 +160,10 @@ Page {
                                 syncListView.model.remove(index)
                                 ArticlesDatabase.removeID(_id)
                                 releaseCommitLock()
-                            }, 1000)
+                            })
                         }
-                        else{               
-                            remorseAction("Commit archiving", function() {
+                        else if(syncAction==="archive"){               
+                            showRemorseItem(qsTr("Commit archiving"), function() {
                                 pageStack.push(Qt.resolvedUrl("ServerInteractionPage.qml"), {
                                     "action": "toggle_archive",
                                     "serverurl": serverurl,
@@ -152,7 +174,37 @@ Page {
                                 syncListView.model.remove(index)
                                 ArticlesDatabase.removeID(_id)
                                 releaseCommitLock()
-                            }, 1000)
+                            })
+                        }
+                        else if(syncAction==="unarchive"){               
+                            showRemorseItem(qsTr("Commit mark as unread"), function() {
+                                pageStack.push(Qt.resolvedUrl("ServerInteractionPage.qml"), {
+                                    "action": "toggle_archive",
+                                    "serverurl": serverurl,
+                                    "username": username,
+                                    "password": password,
+                                    "delID": _id})
+                                        
+                                syncListView.model.remove(index)
+                                ArticlesDatabase.removeID(_id)
+                                releaseCommitLock()
+                            })
+                        }
+                        else if(syncAction==="toggle_fav"){
+                            var _id = id
+                            showRemorseItem(qsTr("Commit toggle favorite"), function() {
+                                pageStack.push(Qt.resolvedUrl("ServerInteractionPage.qml"), {
+                                    "action": "toggle_fav",
+                                    "serverurl": serverurl,
+                                    "username": username,
+                                    "password": password,
+                                    "delID": _id})
+                                        
+                                syncListView.model.remove(index)
+                                ArticlesDatabase.undoSyncStage(_id)
+                                // ArticlesDatabase.removeID(_id)
+                                releaseCommitLock()
+                            })
                         }
                     }else{
                         mainwindow.pushNotification("INFO", qsTr("Please wait"), qsTr("No parallel commits allowed."))    
@@ -160,9 +212,9 @@ Page {
                 }
             }
 
-            function markAsUnread() {
-                remorseAction(qsTr("Mark as unread"), function() {
-                    ArticlesDatabase.markAsUnread(id)
+            function undoSyncStage() {
+                remorseAction(qsTr("Undo"), function() {
+                    ArticlesDatabase.undoSyncStage(id)
                     syncListView.model.remove(index)
                 }, 2000)
             }
@@ -173,8 +225,8 @@ Page {
                 id: contextMenu
                 ContextMenu {
                     MenuItem {
-                        text: qsTr("Mark as unread")
-                        onClicked: markAsUnread()
+                        text: qsTr("Undo")
+                        onClicked: undoSyncStage()
                     }
                 }
             }

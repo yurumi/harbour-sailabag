@@ -80,11 +80,43 @@ ListItem {
              //         margins: Theme.paddingLarge
              //     }
              // }
+             
         Separator {
              anchors.left: parent.left
              anchors.right: parent.right
              color: Theme.primaryColor
         }
+    } // Column
+
+    Column {
+        id: iconColumn
+        width: 25
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: parent.bottom
+        }
+
+        Image {
+            id: favoriteIcon
+            anchors.left: parent.left
+            anchors.leftMargin: -5
+            source: "image://theme/icon-s-favorite"
+            visible: favorite
+            opacity: 0.7
+            scale: 0.7
+        }     
+
+        Image {
+            id: archiveIcon
+            anchors.left: parent.left
+            anchors.leftMargin: -5
+            source: "image://theme/icon-s-certificates"
+            visible: archive
+            opacity: 0.7
+            scale: 0.7
+        }     
+
     }
 
 } // delegate

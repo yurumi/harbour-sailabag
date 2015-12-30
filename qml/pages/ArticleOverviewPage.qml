@@ -28,7 +28,9 @@ Page {
     id: articleoverview
     state: "idle"
     
-    property ArticlesModel articlesModel: ArticlesModel { }
+    property ArticlesModel unreadArticlesModel: ArticlesModel { }
+    property ArticlesModel favoriteArticlesModel: ArticlesModel { }
+    property ArticlesModel archivedArticlesModel: ArticlesModel { }
 
     states: [
     State {
@@ -43,10 +45,12 @@ Page {
     }
     ]
     
-    function updateModel()
+    function updateModels()
     {
         ArticlesDatabase.removeInvalidEntries()
-        ArticlesDatabase.queryUnreadArticles(articlesModel)
+        ArticlesDatabase.queryUnreadArticles(unreadArticlesModel)
+        ArticlesDatabase.queryFavoriteArticles(favoriteArticlesModel)
+        ArticlesDatabase.queryArchivedArticles(archivedArticlesModel)
     }
 
     function downloadActive()
@@ -61,7 +65,7 @@ Page {
 
     function downloadFinished()
     {
-        updateModel()
+        updateModels()
         state = "idle"
     }
 
@@ -69,105 +73,43 @@ Page {
         mainwindow.downloadActive.connect(downloadActive)
         mainwindow.downloadError.connect(downloadError)
         mainwindow.downloadFinished.connect(downloadFinished)
-        updateModel()
+        updateModels()
     }
 
     onStatusChanged: {
         if(status === PageStatus.Activating){
-            updateModel()
+            updateModels()
         }
     }
 
-    SilicaListView {
-        id: articleListView
-        anchors.fill: parent
-        model: articlesModel
-        spacing: 10
-        opacity: busyIndicator.running ? 0.5 : 1.0
+    SlideshowView {
+        id: view
+        width: parent.width
+        height: parent.height
+        itemWidth: width
+        itemHeight: height
         
-        Behavior on opacity {
-                NumberAnimation { duration: 300 }
+        model: ListModel {
+            id: articleCategoryModel
+            ListElement { articleCategory: "unread" }
+            ListElement { articleCategory: "favorite" }
+            ListElement { articleCategory: "archived" }
         }
-        
-        ViewPlaceholder {
-            enabled: (articleListView.count === 0) && (busyIndicator.running === false)
-            text: qsTr("Visit settings page then synchronize.")
-        }
-
-        PullDownMenu {
-            MenuItem {
-                text: qsTr("Settings")
-                onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"), { "settings": mainwindow.settings,
-                                                                                "articlesModel": articlesModel})
-            }
-            MenuItem {
-                text: qsTr("Go to sync page")
-                onClicked: pageStack.push(Qt.resolvedUrl("SyncPage.qml"))
-            }
-            MenuItem {
-                text: qsTr("Download articles")
-                onClicked: {
-                    mainwindow.downloadUnreadArticles()
+        delegate: Loader {
+            id: delegateLoader
+            source: {
+                if(articleCategory === "unread"){
+                    return "../components/UnreadArticlesDelegate.qml"
                 }
-            }
-            MenuItem {
-                text: qsTr("Bag clipboard!")
-                onClicked: {
-                    mainwindow.sendClipboard()
+                else if(articleCategory === "favorite"){
+                    return "../components/FavoriteArticlesDelegate.qml"
+                }
+                else if(articleCategory === "archived"){
+                    return "../components/ArchivedArticlesDelegate.qml"
                 }
             }
         }
-
-        header: PageHeader {
-            title: qsTr("Unread Articles")
-        }
-
-        delegate: ArticleDelegate{
-            function markAsRead() {
-                remorseAction(qsTr("Stage for archiving"), function() {
-                    ArticlesDatabase.markAsRead(articlesModel, url)
-                    articleListView.model.remove(index)
-                }, 2000)
-            }
-    
-            function stageForDeletion() {
-                remorseAction(qsTr("Stage for deletion"), function() {
-                    ArticlesDatabase.stageForDeletion(articlesModel, url)
-                    articleListView.model.remove(index)
-                }, 2000)
-            }
-
-            onClicked: {
-                pageStack.push(Qt.resolvedUrl("ArticleViewPage.qml"), {"articleUrl": url, "articleTitle": title, "articleContent": content, "articlesModel": articlesModel})
-            }
-            
-            Component {
-                id: contextMenu
-                
-                ContextMenu {
-                    MenuItem {
-                        text: qsTr("Stage for archiving")
-                        onClicked: markAsRead()
-                    }
-                    MenuItem {
-                        text: qsTr("Stage for deletion")
-                        onClicked: stageForDeletion()
-                    }       
-                    MenuItem {
-                        text: qsTr("Share")
-                        onClicked: {
-                            shareArticle.articleURL = url
-                            shareArticle.state = "visible"
-                        }
-                    }       
-                }
-            } // contextMenu
-
-        }
-        
-        VerticalScrollDecorator {}
-
-    } // ListView
+    } // SlideshowView
 
     ShareArticle { id: shareArticle;}
     

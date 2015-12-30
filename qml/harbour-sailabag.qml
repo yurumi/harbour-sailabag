@@ -24,7 +24,7 @@ import harbour.sailabag.notifications 1.0
 import harbour.sailabag.DownloadManager 1.0
 import "models"
 import "pages"
-import "js/settings/Database.js" as Database
+import "js/settings/Database.js" as SettingsDatabase
 import "js/articles/ArticlesDatabase.js" as ArticlesDatabase
 
 ApplicationWindow
@@ -32,8 +32,18 @@ ApplicationWindow
     id: mainwindow
     allowedOrientations: defaultAllowedOrientations
 
-    initialPage: Component { ArticleOverviewPage{} }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
+    initialPage: ArticlesDatabase.checkArticlesDbVersion() ? articleOverviewPage : versionUpdateInformationPage
+
+    Component {
+        id: articleOverviewPage
+        ArticleOverviewPage{}
+    }
+
+    Component {
+        id: versionUpdateInformationPage
+        VersionUpdateInformationPage{}
+    }
 
     property alias settings: settings
     property alias downloadmanager: downloadmanager
@@ -58,13 +68,34 @@ ApplicationWindow
         var serverURL = mainwindow.settings.serverURL
         var userID = mainwindow.settings.userID
         var userToken = mainwindow.settings.userToken
-        ArticlesDatabase.invalidateEntries()
-        mainwindow.downloadmanager.downloadFeed(serverURL, userID, userToken)
+        ArticlesDatabase.invalidateEntries("unread")
+        mainwindow.downloadmanager.downloadFeed(serverURL, userID, userToken, "home")
     }
 
-    function store (url, id, title, content, pubDate)
+    function downloadFavoriteArticles()
     {
-        ArticlesDatabase.store(url, id, title, content, pubDate);
+        downloadActive()
+        var serverURL = mainwindow.settings.serverURL
+        var userID = mainwindow.settings.userID
+        var userToken = mainwindow.settings.userToken
+        ArticlesDatabase.invalidateEntries("favorite")
+        mainwindow.downloadmanager.downloadFeed(serverURL, userID, userToken, "fav")
+    }
+
+    function downloadArchivedArticles()
+    {
+        downloadActive()
+        var serverURL = mainwindow.settings.serverURL
+        var userID = mainwindow.settings.userID
+        var userToken = mainwindow.settings.userToken
+        ArticlesDatabase.invalidateEntries("archived")
+        mainwindow.downloadmanager.downloadFeed(serverURL, userID, userToken, "archive")
+    }
+
+    function store (url, id, title, content, pubDate, articleCategory)
+    {
+        console.log("Store: ", id , title, articleCategory)
+        ArticlesDatabase.store(url, id, title, content, pubDate, articleCategory);
     }
 
     // Workaround for empty clipboard when app not active (cover view)
@@ -107,33 +138,23 @@ ApplicationWindow
 
         Component.onCompleted: {
             // settings
-            Database.load();
-            Database.transaction(function(tx) {
-                    var serverURL = Database.transactionGet(tx, "serverURL");
+            SettingsDatabase.load();
+            SettingsDatabase.transaction(function(tx) {
+                    var serverURL = SettingsDatabase.transactionGet(tx, "serverURL");
                     settings.serverURL = (serverURL === false ? "http:\/\/" : serverURL);
 
-                    var userID = Database.transactionGet(tx, "userID")
+                    var userID = SettingsDatabase.transactionGet(tx, "userID")
                     settings.userID = (userID === false ? 0 : parseInt(userID));
                     
-                    var userToken = Database.transactionGet(tx, "userToken");
+                    var userToken = SettingsDatabase.transactionGet(tx, "userToken");
                     settings.userToken = (userToken === false ? "" : userToken);
 
-                    var userName = Database.transactionGet(tx, "userName");
+                    var userName = SettingsDatabase.transactionGet(tx, "userName");
                     settings.userName = (userName === false ? "" : userName);
 
-                    var userPassword = Database.transactionGet(tx, "userPassword");
+                    var userPassword = SettingsDatabase.transactionGet(tx, "userPassword");
                     settings.userPassword = (userPassword === false ? "" : userPassword);
                 });
-     
-            // articles
-            ArticlesDatabase.load();
-
-            // download manager
-            mainwindow.downloadmanager.syncFinished.connect(downloadFinishedSlot);
-            mainwindow.downloadmanager.downloadError.connect(downloadErrorSlot);
-
-            // Testing
-            // Clipboard.text = "http://www.w3schools.com/jsref/met_document_queryselector.asp"
         }        
     }
 
@@ -143,10 +164,16 @@ ApplicationWindow
     }
 
     Component.onCompleted: {
+        // download manager
+        downloadmanager.syncFinished.connect(downloadFinishedSlot);
+        downloadmanager.downloadError.connect(downloadErrorSlot);
         downloadmanager.itemParsed.connect(store);
         downloadmanager.notification.connect(pushNotification);
+
+        // Testing
+        // Clipboard.text = "http://www.w3schools.com/jsref/met_document_queryselector.asp"
     }
-  
+
     //////////////////////////////////////
     // Notifications
     ///////////////////

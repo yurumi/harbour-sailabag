@@ -26,12 +26,16 @@ ListModel
     function populate(sqlrows)
     {
         articlesmodel.clear();
+        appendRows(sqlrows)
+    }
 
+    function appendRows(sqlrows)
+    {
         for(var i = 0; i < sqlrows.length; i++)
         {
             var row = sqlrows[i]
 
-            articlesmodel.append({"url": row.url, "id": row.id, "title": row.title, "content": row.content, "pubDate": row.pubDate})
+            articlesmodel.append({"url": row.url, "id": row.id, "title": row.title, "content": row.content, "pubDate": row.pubDate, "favorite": row.favoriteFlag, "archive": row.archiveFlag, "syncAction": row.syncAction})
         }
     }
 }

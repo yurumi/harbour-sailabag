@@ -95,6 +95,7 @@ Item {
         }
 
         Row {
+            spacing: 10
             anchors {
                 top: headerLBL.bottom
                 bottom: parent.bottom
